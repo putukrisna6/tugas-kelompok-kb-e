@@ -4,6 +4,8 @@
 
 using namespace std;
 
+int iteration = 0;
+
 struct Statespace {
     int puzzle[N][N];
     int spare[2];
@@ -57,12 +59,15 @@ istream& operator>> (istream& input, Statespace& s) {
     return input;
 }
 ostream& operator<< (ostream& output, Statespace& s) {
+    cout << "Heuristic: " << s.evaluate << " Iteration: " << iteration << endl;
+    cout << "-----" << endl;
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
             output << s.puzzle[i][j] << " ";
         }
         output << endl;
     }
+    cout << "-----" << endl;
 
     return output;
 }
@@ -83,7 +88,6 @@ public:
     }
 };
 
-ofstream ofs("output.txt");
 // stores the start and the goal puzzle states
 Statespace start, goal;
 // tracks the current state
@@ -93,8 +97,6 @@ Statespace current;
 set<Statespace, Equal> openList;
 // tracks which puzzle states have been explored already
 vector<Statespace> explored;
-
-int t = 0;
 
 inline int move(char pos) {
     int p, q, \
@@ -145,14 +147,13 @@ inline int move(char pos) {
     return 0;
 }
 
-int greedyBest() {
+void greedyBest() {
     set<Statespace, Equal>::iterator l = openList.begin();
     current = *l;
 
     if (current == goal)
-        return t;
+        return;
     
-    ofs << current << endl;
     cout << current << endl;
 
     explored.push_back(current);
@@ -169,10 +170,10 @@ int greedyBest() {
     if (current.spare[0] > 0)
         move('D');
 
-    t++;
+    iteration++;
     greedyBest();
 
-    return 0;
+    return;
 }
 
 void initiate() {
@@ -182,13 +183,12 @@ void initiate() {
 }
 
 int main() {
-    ifstream inf("input.txt");
-    inf >> start >> goal;
+    cin >> start >> goal;
 
     initiate();
 
-    ofs << current << endl;
     cout << current << endl;
+    cout << "Goal State found within " << iteration << " iterations.\n";
 
     return 0;
 }
