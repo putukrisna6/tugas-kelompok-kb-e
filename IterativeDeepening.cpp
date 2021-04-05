@@ -4,6 +4,8 @@
 
 using namespace std;
 
+int iteration = 0;
+
 struct Statespace {
     // a N by N array to store the puzzle's state
     int puzzle[N][N];
@@ -59,12 +61,15 @@ void Statespace::operator= (Statespace s) {
 
 // adding << and >> operators to the Statespace for ease of output and input
 ostream& operator<< (ostream& output, Statespace& s) {
+    cout << "Depth: " << s.depth << " Iteration: " << iteration << endl;
+    cout << "-----" << endl;
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
             output << s.puzzle[i][j] << " ";
         }
         output << endl;
     }
+    cout << "-----" << endl;
 
     return output;
 }
@@ -99,7 +104,6 @@ public:
     }
 };
 
-ofstream ofs("output.txt");
 // stores the start and the goal puzzle states
 Statespace start, goal;
 // tracks the current state
@@ -109,8 +113,6 @@ Statespace current;
 set<Statespace, Equal> openList;
 // tracks which puzzle states have been explored already
 vector<Statespace> explored;
-
-int t = 0;
 
 void get() {
     current.evaluate = goal - current;
@@ -165,15 +167,14 @@ inline int move(char pos) {
     return 0;
 }
 
-int iterativeDeepening() {
+void iterativeDeepening() {
     set<Statespace, Equal>::iterator l = openList.begin();
     current = *l;
 
     if (current == goal) {
-        return t;
+        return;
     }
 
-    ofs << current << endl;
     cout << current << endl;
 
     explored.push_back(current);
@@ -190,12 +191,11 @@ int iterativeDeepening() {
     if (current.spare[0] > 0)
         move('D');
 
-    t++;
+    iteration++;
     current.depth++;
-
     iterativeDeepening();
 
-    return 0;
+    return;
 }
 
 void initiate() {
@@ -205,13 +205,12 @@ void initiate() {
 }
 
 int main() {
-    ifstream inf("input.txt");
-    inf >> start >> goal;
+    cin >> start >> goal;
 
     initiate();
 
-    ofs << current << endl;
     cout << current << endl;
+    cout << "Goal State found within " << iteration << " iterations.\n";
 
     return 0;
 }
