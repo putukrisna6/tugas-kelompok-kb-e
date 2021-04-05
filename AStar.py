@@ -102,8 +102,14 @@ class Puzzle:
             if(self.h(cur.data,goal) == 0):
                 break
             for i in cur.generate_child():
-                i.fval = self.f(i,goal)
-                self.open.append(i)
+                done=0
+                if i is not None:
+                    for j in self.closed:
+                        if (self.h(i.data,j.data) == 0):
+                            done=1
+                if done == 0:
+                    i.fval = self.f(i,goal)
+                    self.open.append(i)
             self.closed.append(cur)
             del self.open[0]
 

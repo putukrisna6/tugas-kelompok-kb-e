@@ -65,7 +65,7 @@ class Puzzle:
         return puz        
 
     def check(self,start,goal):
-        # heuristik manhattan
+
         temp = 0
         for i in range(0,self.n):
             for j in range(0,self.n):
@@ -95,7 +95,13 @@ class Puzzle:
             if(self.check(cur.data,goal) == 0):
                 break
             for i in cur.generate_child():
-                self.open.append(i)
+                done=0
+                if i is not None:
+                    for j in self.closed:
+                        if (self.check(i.data,j.data) == 0):
+                            done=1
+                if done == 0:
+                    self.open.append(i)
             self.closed.append(cur)
             del self.open[0]
 
