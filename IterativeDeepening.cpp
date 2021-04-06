@@ -16,48 +16,42 @@ struct Statespace {
     int depth;
 
     // operators
-    bool operator< (Statespace) const;
-    int operator- (Statespace) const;
-    bool operator== (Statespace) const;
-    void operator= (Statespace);
+    bool operator< (Statespace s) const {
+        return (evaluate < s.evaluate);
+    }
+    int Statespace::operator- (Statespace s) const {
+        int count = 0;
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                if (puzzle[i][j] != s.puzzle[i][j] \ 
+                    && puzzle[i][j] != 0)
+                    count++;
+            }
+        }
+        // returns the difference between each statespaces' puzzle state
+        return count;
+    }
+    bool Statespace::operator== (Statespace s) const {
+        // returns true if two statespaces' puzzle have zero difference
+        if((*this)-s == 0)
+            return true;
+        else
+            return false;
+    }
+    void Statespace::operator= (Statespace s) {
+        // assigns the value of s statespace to this statespace
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                puzzle[i][j] = s.puzzle[i][j];
+            }
+        }
+
+        depth = s.depth;
+        spare[0] = s.spare[0];
+        spare[1] = s.spare[1];
+        evaluate = s.evaluate;
+    }
 };
-
-// operator definitions
-bool Statespace::operator< (Statespace s) const {
-    return (evaluate < s.evaluate);
-}
-int Statespace::operator- (Statespace s) const {
-    int count = 0;
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            if (puzzle[i][j] != s.puzzle[i][j] \ 
-                && puzzle[i][j] != 0)
-                count++;
-        }
-    }
-    // returns the difference between each statespaces' puzzle state
-    return count;
-}
-bool Statespace::operator== (Statespace s) const {
-    // returns true if two statespaces' puzzle have zero difference
-    if((*this)-s == 0)
-        return true;
-    else
-        return false;
-}
-void Statespace::operator= (Statespace s) {
-    // assigns the value of s statespace to this statespace
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            puzzle[i][j] = s.puzzle[i][j];
-        }
-    }
-
-    depth = s.depth;
-    spare[0] = s.spare[0];
-    spare[1] = s.spare[1];
-    evaluate = s.evaluate;
-}
 
 // adding << and >> operators to the Statespace for ease of output and input
 ostream& operator<< (ostream& output, Statespace& s) {
@@ -205,6 +199,21 @@ void initiate() {
 }
 
 int main() {
+    /*
+    * Input format
+    * 1 2 3
+    * 4 5 6
+    * 7 8 0
+    * 
+    * For example
+    * 0 1 3
+    * 4 2 5
+    * 7 8 6
+    * 
+    * 1 2 3
+    * 4 5 6
+    * 7 8 0
+    */
     cin >> start >> goal;
 
     initiate();

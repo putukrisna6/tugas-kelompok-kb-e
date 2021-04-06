@@ -183,6 +183,22 @@ void initiate() {
 }
 
 int main() {
+    /*
+    * Input format
+    * 1 2 3
+    * 4 5 6
+    * 7 8 0
+    * 
+    * For example
+    * 0 1 3
+    * 4 2 5
+    * 7 8 6
+    * 
+    * 1 2 3
+    * 4 5 6
+    * 7 8 0
+    */
+
     cin >> start >> goal;
 
     initiate();

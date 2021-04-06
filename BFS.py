@@ -51,7 +51,7 @@ class Node:
 class Puzzle:
     def __init__(self,size):
         self.n = size
-        # node to transveres
+        # node to transverse
         self.open = []
         # node already transversed
         self.closed = []
