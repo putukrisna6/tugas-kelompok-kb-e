@@ -81,10 +81,21 @@ class Puzzle:
 
         start = Node(start,0,0)
 
+        node_added = 0
+
         self.open.append(start)
         print("\n\n")
         while True:
             cur = self.open[0]
+            #check if already transversed
+            done = 0
+            for i in self.closed:
+                if(self.check(cur.data,i.data)==0):
+                    done = 1
+                    break
+            if done == 1:
+                del self.open[0] 
+                continue
             # print curent node
             print("------")
             for i in cur.data:
@@ -93,15 +104,13 @@ class Puzzle:
                 print("")
             # reach goal
             if(self.check(cur.data,goal) == 0):
+                print("=======")
+                print("node added :",node_added)
+                print("node checked :",len(self.closed))
                 break
             for i in cur.generate_child():
-                done=0
-                if i is not None:
-                    for j in self.closed:
-                        if (self.check(i.data,j.data) == 0):
-                            done=1
-                if done == 0:
-                    self.open.append(i)
+                self.open.append(i)
+                node_added += 1
             self.closed.append(cur)
             del self.open[0]
 
