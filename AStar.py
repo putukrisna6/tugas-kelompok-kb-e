@@ -112,8 +112,9 @@ class Puzzle:
             # reach goal
             if(self.h(cur.data,goal) == 0):
                 print("=======")
-                print("node added :",node_added)
-                print("node checked :",len(self.closed))
+                print("node added to open list :",node_added)
+                print("Iterasi :",len(self.closed))
+                print("Depth :",cur.level+1)
                 break
             for i in cur.generate_child():
                 i.fval = self.f(i,goal)
