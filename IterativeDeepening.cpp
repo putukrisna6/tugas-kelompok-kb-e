@@ -19,7 +19,7 @@ struct Statespace {
     bool operator< (Statespace s) const {
         return (evaluate < s.evaluate);
     }
-    int Statespace::operator- (Statespace s) const {
+    int operator- (Statespace s) const {
         int count = 0;
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
@@ -31,14 +31,14 @@ struct Statespace {
         // returns the difference between each statespaces' puzzle state
         return count;
     }
-    bool Statespace::operator== (Statespace s) const {
+    bool operator== (Statespace s) const {
         // returns true if two statespaces' puzzle have zero difference
         if((*this)-s == 0)
             return true;
         else
             return false;
     }
-    void Statespace::operator= (Statespace s) {
+    void operator= (Statespace s) {
         // assigns the value of s statespace to this statespace
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
